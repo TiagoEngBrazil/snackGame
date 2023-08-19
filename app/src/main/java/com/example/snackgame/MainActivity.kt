@@ -156,6 +156,7 @@ fun Board(state: State) {
     }
 }
 
+
 @Composable
 fun Buttons(onDirectionchange: (Pair<Int, Int>) -> Unit) {
     val buttonSize = Modifier.size(64.dp)
@@ -170,14 +171,15 @@ fun Buttons(onDirectionchange: (Pair<Int, Int>) -> Unit) {
                 Icon(Icons.Default.KeyboardArrowLeft, null)
             }
             Spacer(modifier = buttonSize)
+
             Button(onClick = { onDirectionchange(Pair(1, 0)) }, modifier = buttonSize) {
 
                 Icon(Icons.Default.KeyboardArrowRight, null)
             }
-            Button(onClick = { onDirectionchange(Pair(0, 1)) }, modifier = buttonSize) {
+        }
+        Button(onClick = { onDirectionchange(Pair(0, 1)) }, modifier = buttonSize) {
 
-                Icon(Icons.Default.KeyboardArrowDown, null)
-            }
+            Icon(Icons.Default.KeyboardArrowDown, null)
         }
     }
 }
