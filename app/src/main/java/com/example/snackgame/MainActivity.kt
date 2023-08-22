@@ -7,10 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -21,7 +18,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.example.snackgame.ui.theme.Shapes
@@ -34,6 +30,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlin.jvm.Throws
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -161,6 +158,7 @@ fun Board(state: State) {
 @Composable
 fun Buttons(onDirectionchange: (Pair<Int, Int>) -> Unit) {
     val buttonSize = Modifier.size(64.dp)
+    val buttonSize2 = Modifier.size(100.dp)
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(24.dp)) {
         Button(onClick = { onDirectionchange(Pair(0, -1)) }, modifier = buttonSize) {
 
@@ -183,14 +181,11 @@ fun Buttons(onDirectionchange: (Pair<Int, Int>) -> Unit) {
             Icon(Icons.Default.KeyboardArrowDown, null)
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    SnackGameTheme {
-
+    
+    Button(onClick = {  }, modifier = Modifier.fillMaxWidth().padding(80.dp, 20.dp, 80.dp, 20.dp)) {
+        Text(text = "Stop")
     }
 }
+
 
 
