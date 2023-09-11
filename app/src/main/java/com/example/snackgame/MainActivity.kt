@@ -7,8 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -19,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.example.snackgame.ui.theme.Shapes
@@ -42,10 +45,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             SnackGameTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
+                Surface(modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background) {
                     Snack(game)
                 }
             }
@@ -77,9 +78,9 @@ class Game(private val scope: CoroutineScope) {
             var snackLenth = 4
 
             while (true) {
-                delay(230)
+                delay(150)
                 mutableState.update {
-                    var newPosition = it.snack.first().let { poz ->
+                    val newPosition = it.snack.first().let { poz ->
                         mutex.withLock {
                             Pair(
                                 (poz.first + move.first + BOARD_SIZE) % BOARD_SIZE,
@@ -100,8 +101,7 @@ class Game(private val scope: CoroutineScope) {
                         food = if (newPosition == it.food) Pair(
 
                             Random.nextInt(BOARD_SIZE),
-                            Random.nextInt(BOARD_SIZE)
-                        )
+                            Random.nextInt(BOARD_SIZE))
                         else it.food,
 
                         snack = listOf(newPosition) + it.snack.take(snackLenth - 1)
@@ -112,7 +112,7 @@ class Game(private val scope: CoroutineScope) {
     }
 
     companion object {
-        const val BOARD_SIZE = 22
+        const val BOARD_SIZE = 16
     }
 
 }
@@ -133,36 +133,26 @@ fun Snack(game: Game) {
 
 @Composable
 fun Board(state: State) {
-    BoxWithConstraints(Modifier.padding(10.dp)) {
+    BoxWithConstraints(Modifier.padding(16.dp)) {
         val tileSize = maxWidth / Game.BOARD_SIZE
 
-        Box(
-            Modifier
-                .size(maxWidth, 460.dp)
-                .border(
-                    2.dp, Color.Blue
-                )
-//                .height(maxHeight)
-        )
+        Box(Modifier
+            .size(maxWidth)
+            .border(2.dp, Color.Blue
+            ))
 
-        Box(
-            Modifier
-                .offset(x = tileSize * state.food.first, y = tileSize * state.food.second)
-                .size(tileSize)
-                .background(
-                    Color.Blue, CircleShape
-                )
-        )
+        Box(Modifier
+            .offset(x = tileSize * state.food.first, y = tileSize * state.food.second)
+            .size(tileSize)
+            .background(
+                Color.Blue, CircleShape))
 
         state.snack.forEach {
-            Box(
-                modifier = Modifier
-                    .offset(x = tileSize * it.first, y = tileSize * it.second)
-                    .size(tileSize)
-                    .background(
-                        Color.Blue, Shapes.small
-                    )
-            )
+            Box(modifier = Modifier
+                .offset(x = tileSize * it.first, y = tileSize * it.second)
+                .size(tileSize)
+                .background(
+                    Color.Blue, Shapes.small))
         }
     }
 }
@@ -170,7 +160,7 @@ fun Board(state: State) {
 
 @Composable
 fun Buttons(onDirectionchange: (Pair<Int, Int>) -> Unit) {
-    val buttonSize = Modifier.size(50.dp)
+    val buttonSize = Modifier.size(64.dp)
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(24.dp)) {
         Button(onClick = { onDirectionchange(Pair(0, -1)) }, modifier = buttonSize) {
 
@@ -192,26 +182,15 @@ fun Buttons(onDirectionchange: (Pair<Int, Int>) -> Unit) {
 
             Icon(Icons.Default.KeyboardArrowDown, null)
         }
-        Button(
-            onClick = { }, modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 80.dp, top = 20.dp, end = 80.dp),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Text(text = "Stop")
-        }
-        Button(
-            onClick = { }, modifier = Modifier
-                .fillMaxWidth().padding(start = 80.dp, end = 80.dp),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Text(text = "Restart")
-        }
-
-        }
-
-
+    }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    SnackGameTheme {
+
+    }
+}
 
 
